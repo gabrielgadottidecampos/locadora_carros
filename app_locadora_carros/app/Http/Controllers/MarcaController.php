@@ -13,7 +13,8 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //
+        $marca = Marca::all();
+        return $marca;
     }
 
     /**
@@ -21,7 +22,8 @@ class MarcaController extends Controller
      */
     public function store(StoreMarcaRequest $request)
     {
-        //
+        $marca =  Marca::create($request->all());
+        return $marca;
     }
 
     /**
@@ -29,7 +31,7 @@ class MarcaController extends Controller
      */
     public function show(Marca $marca)
     {
-        //
+        return $marca;
     }
 
     /**
@@ -37,7 +39,8 @@ class MarcaController extends Controller
      */
     public function update(UpdateMarcaRequest $request, Marca $marca)
     {
-        //
+        $marca->update($request->all());
+        return $marca;
     }
 
     /**
@@ -45,6 +48,8 @@ class MarcaController extends Controller
      */
     public function destroy(Marca $marca)
     {
-        //
+        //print_r($marca->getAttributes());
+        //getAttributes()
+        $marca->delete();
     }
 }
