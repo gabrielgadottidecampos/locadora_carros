@@ -8,12 +8,15 @@ use App\Http\Requests\UpdateModeloRequest;
 
 class ModeloController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(Modelo $modelo)
+    {
+        $this->modelo = $modelo;
+    }
+
     public function index()
     {
-        //
+        $modelo = $this->modelo->all();
+        return $modelo;
     }
 
     /**
@@ -21,7 +24,24 @@ class ModeloController extends Controller
      */
     public function store(StoreModeloRequest $request)
     {
-        //
+        $request->validate($this->modelo->rules());
+        // Recebendo imagem e selecionando local onde será salva
+        $imagem = $request->file('imagem'); // pega a imagem 'nome que esta postman' do requet
+        $imagem_urn = $imagem->store('imagens/modelos', 'public'); // salva a imagem na pasta imagem 'configurado no config\filesystems.php' e diretorio public
+
+        // existem 2 sintax para salva
+        $modelo = $this->modelo->create([
+            'marca_id' => $request->marca_id,
+            'nome' => $request->nome,
+            'imagem' => $imagem_urn,
+            'numero_portas' => $request->numero_portas,
+            'lugares' => $request->lugares,
+            'air_bag' => $request->air_bag,
+            'abs' => $request->abs
+        ]);
+
+
+        return $modelo;
     }
 
     /**
